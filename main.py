@@ -3,11 +3,13 @@ import turtle
 wd = turtle.Screen() # criar uma janela
 wd.title("Pong game") # titulo do programa
 wd.bgcolor("black") # cor do background
-wd.setup(width=800, height=600) # tamanho da janela
+gameWidth = 800
+gameHeight = 600
+wd.setup(width=gameWidth, height=gameHeight) # tamanho da janela
 wd.tracer(0) # stop automatic screen updates e por isso temos q faze-lo manualmente
              # speed up um pouco o jogo
 
-# raquete A
+# Raquete A
 raquete_a = turtle.Turtle() # turtle object (turtle - module, Turtle - class)
 raquete_a.speed(0) #  velocidade da animacao para o maximo
 raquete_a.shape("square") # forma da raquete (retangular)
@@ -16,7 +18,7 @@ raquete_a.shapesize(stretch_wid=5, stretch_len=1)
 raquete_a.penup() # picks the pen up so the turtle does not draw a line as it moves
 raquete_a.goto(-350, 0)
 
-# raquete B
+# Raquete B
 raquete_b = turtle.Turtle()
 raquete_b.speed(0)
 raquete_b.shape("square")
@@ -32,6 +34,8 @@ ball.shape("circle")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
+ball.dx = 0.1
+ball.dy = 0.1
 
 # Funcoes
 
@@ -65,7 +69,34 @@ wd.onkeypress(raquete_a_down, "s") # se a tecla s tiver a ser pressionada corre 
 wd.onkeypress(raquete_b_up, "Up") # se a seta de cima tiver a ser pressionada corre a funcao raquete_b_up
 wd.onkeypress(raquete_b_down, "Down") # se a seta de baixo tiver a ser pressionada corre a funcao raquete_b_down
 
-# main game loop
+# Main game loop
 while True:
+    print(ball.dx)
+    print(ball.dy)
+
     # sempre que o loop corre dá update ao screen
     wd.update()
+
+    # Move the ball
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    # Colisao com a barreira verticalmente (cima)
+    if ball.ycor() > ((gameHeight) / 2) - 20:
+        ball.sety(((gameHeight) / 2) - 20)
+        ball.dy *= -1
+
+    # Colisao com a barreira verticalmente (baixo)
+    if ball.ycor() < (-(gameHeight) / 2) + 20:
+        ball.sety((-(gameHeight) / 2) + 20)
+        ball.dy *= -1
+
+    # Colisao com a barreira horizontalmente (direita)
+    if ball.xcor() > ((gameWidth) / 2) - 20:
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    # Colisao com a barreira horizontalmente (direita)
+    if ball.xcor() < (-(gameWidth) / 2) + 20:
+        ball.goto(0, 0)
+        ball.dx *= -1
