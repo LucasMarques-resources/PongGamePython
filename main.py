@@ -121,3 +121,11 @@ while True:
     # raquete A colisao baixo
     if raquete_a.ycor() - 50 <= -(gameHeight / 2):
         raquete_a.sety(-(gameHeight / 2) + 50)
+
+    # raquete B colisao cima
+    if raquete_b.ycor() + 50 >= gameHeight / 2:
+        raquete_b.sety((gameHeight / 2) - 50)
+
+    # raquete B colisao baixo
+    if raquete_b.ycor() - 50 <= -(gameHeight / 2):
+        raquete_b.sety(-(gameHeight / 2) + 50)
