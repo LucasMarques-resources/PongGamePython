@@ -1,4 +1,5 @@
 import turtle
+import winsound
 
 wd = turtle.Screen() # criar uma janela
 wd.title("Pong game") # titulo do programa
@@ -79,6 +80,12 @@ def raquete_b_down():
     y -= 20
     raquete_b.sety(y)
 
+def tocarSomBounce():
+    winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+
+def tocarSomPonto():
+    winsound.PlaySound("score.wav", winsound.SND_ASYNC)
+
 wd.listen() # ouvir input no teclado
 wd.onkeypress(raquete_a_up, "w") # se a tecla w tiver a ser pressionada corre a funcao raquete_a_up
 wd.onkeypress(raquete_a_down, "s") # se a tecla s tiver a ser pressionada corre a funcao raquete_a_down
@@ -101,11 +108,13 @@ while True:
     # Colisoes da bola com as raquetes
     # raquete A
     if (bola.xcor() > (raquete_b.xcor() - 20) and bola.xcor() < (raquete_b.xcor() + 20)) and (bola.ycor() < raquete_b.ycor() + 50 and bola.ycor() > raquete_b.ycor() - 50):
+        tocarSomBounce()
         bola.setx((raquete_b.xcor() - 20))
         bola.dx *= -1
 
     # raquete B
     if (bola.xcor() < (raquete_a.xcor() + 20) and bola.xcor() > bola.xcor() - 20) and (bola.ycor() < raquete_a.ycor() + 50 and bola.ycor() > raquete_a.ycor() - 50):
+        tocarSomBounce()
         bola.setx((raquete_a.xcor() + 20))
         bola.dx *= -1
 
@@ -123,6 +132,7 @@ while True:
     if bola.xcor() > ((gameWidth) / 2) - 20:
         bola.goto(0, 0)
         pontosA += 1 # A marcou ponto
+        tocarSomPonto() # tocar som
         marcou_ponto = True
         bola.dx *= -1
 
@@ -130,6 +140,7 @@ while True:
     if bola.xcor() < (-(gameWidth) / 2) + 20:
         bola.goto(0, 0)
         pontosB += 1 # B marcou ponto
+        tocarSomPonto() # tocar som
         marcou_ponto = True
         bola.dx *= -1
 
