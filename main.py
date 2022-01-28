@@ -9,6 +9,11 @@ wd.setup(width=gameWidth, height=gameHeight) # tamanho da janela
 wd.tracer(0) # stop automatic screen updates e por isso temos q faze-lo manualmente
              # speed up um pouco o jogo
 
+# Pontuacao
+pontosA = 0
+pontosB = 0
+marcou_ponto = False
+
 # Raquete A
 raquete_a = turtle.Turtle() # turtle object (turtle - module, Turtle - class)
 raquete_a.speed(0) #  velocidade da animacao para o maximo
@@ -34,11 +39,22 @@ bola.shape("circle")
 bola.color("white")
 bola.penup()
 bola.goto(0, 0)
-bola.dx = 0.1
-bola.dy = 0.1
+bola.dx = 0.5
+bola.dy = 0.5
+
+# Caneta
+caneta = turtle.Turtle()
+caneta.speed(0)
+caneta.color("white")
+caneta.penup()
+caneta.hideturtle() # nao queremos ver a caneta apenas o texto
+caneta.goto(0, 260)
+caneta.write(f"Player A: {pontosA} Player B: {pontosB}",
+             align="center", font=("Courier", 24, "normal"))
+             # texto, centrado, fonte courier, tamanho 24, tipo normal
+             # apenas o texto inicial
 
 # Funcoes
-
 # mover raquete A para cima
 def raquete_a_up():
     y = raquete_a.ycor()
@@ -106,11 +122,15 @@ while True:
     # Colisao com a barreira horizontalmente (direita)
     if bola.xcor() > ((gameWidth) / 2) - 20:
         bola.goto(0, 0)
+        pontosA += 1 # A marcou ponto
+        marcou_ponto = True
         bola.dx *= -1
 
     # Colisao com a barreira horizontalmente (esquerda)
     if bola.xcor() < (-(gameWidth) / 2) + 20:
         bola.goto(0, 0)
+        pontosB += 1 # B marcou ponto
+        marcou_ponto = True
         bola.dx *= -1
 
     # Colisao entre as raquetes e a barreira
@@ -129,3 +149,9 @@ while True:
     # raquete B colisao baixo
     if raquete_b.ycor() - 50 <= -(gameHeight / 2):
         raquete_b.sety(-(gameHeight / 2) + 50)
+
+    # se marcou ponto atualiza o texto que esta a ser desenhado
+    if marcou_ponto:
+        caneta.clear() # dar clear ao que esta escrito
+        caneta.write(f"Player A: {pontosA} Player B: {pontosB}", align="center", font=("Courier", 24, "normal")) # texto, centrado, fonte courier, tamanho 24, tipo normal
+        marcou_ponto = False
