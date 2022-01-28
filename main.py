@@ -52,7 +52,7 @@ caneta.hideturtle() # nao queremos ver a caneta apenas o texto
 caneta.goto(0, 260)
 caneta.write(f"Player A: {pontosA} Player B: {pontosB}",
              align="center", font=("Courier", 24, "normal"))
-             # texto, centrado, fonte courier, tamanho 24, tipo normal
+             # texto, centrado, fonte Courier, tamanho 24, tipo normal
              # apenas o texto inicial
 
 # Funcoes
@@ -80,11 +80,13 @@ def raquete_b_down():
     y -= 20
     raquete_b.sety(y)
 
+# funcao tocar som de rebater
 def tocarSomBounce():
-    winsound.PlaySound("bounce.wav", winsound.SND_ASYNC)
+    winsound.PlaySound("Sounds/bounce.wav", winsound.SND_ASYNC)
 
+# funcao tocar som de ponto ganho
 def tocarSomPonto():
-    winsound.PlaySound("score.wav", winsound.SND_ASYNC)
+    winsound.PlaySound("Sounds/score.wav", winsound.SND_ASYNC)
 
 wd.listen() # ouvir input no teclado
 wd.onkeypress(raquete_a_up, "w") # se a tecla w tiver a ser pressionada corre a funcao raquete_a_up
@@ -108,13 +110,13 @@ while True:
     # Colisoes da bola com as raquetes
     # raquete A
     if (bola.xcor() > (raquete_b.xcor() - 20) and bola.xcor() < (raquete_b.xcor() + 20)) and (bola.ycor() < raquete_b.ycor() + 50 and bola.ycor() > raquete_b.ycor() - 50):
-        tocarSomBounce()
+        tocarSomBounce() # tocar som de rebater
         bola.setx((raquete_b.xcor() - 20))
         bola.dx *= -1
 
     # raquete B
     if (bola.xcor() < (raquete_a.xcor() + 20) and bola.xcor() > bola.xcor() - 20) and (bola.ycor() < raquete_a.ycor() + 50 and bola.ycor() > raquete_a.ycor() - 50):
-        tocarSomBounce()
+        tocarSomBounce() # tocar som de rebater
         bola.setx((raquete_a.xcor() + 20))
         bola.dx *= -1
 
@@ -132,7 +134,7 @@ while True:
     if bola.xcor() > ((gameWidth) / 2) - 20:
         bola.goto(0, 0)
         pontosA += 1 # A marcou ponto
-        tocarSomPonto() # tocar som
+        tocarSomPonto() # tocar som de ponto ganho
         marcou_ponto = True
         bola.dx *= -1
 
@@ -140,7 +142,7 @@ while True:
     if bola.xcor() < (-(gameWidth) / 2) + 20:
         bola.goto(0, 0)
         pontosB += 1 # B marcou ponto
-        tocarSomPonto() # tocar som
+        tocarSomPonto() # tocar som de ponto ganho
         marcou_ponto = True
         bola.dx *= -1
 
