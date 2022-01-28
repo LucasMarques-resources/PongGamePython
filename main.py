@@ -4,8 +4,8 @@ import winsound
 wd = turtle.Screen() # criar uma janela
 wd.title("Pong game") # titulo do programa
 wd.bgcolor("black") # cor do background
-gameWidth = 800
-gameHeight = 600
+gameWidth = 800 # largura do jogo
+gameHeight = 600 # altura do jogo
 wd.setup(width=gameWidth, height=gameHeight) # tamanho da janela
 wd.tracer(0) # stop automatic screen updates e por isso temos q faze-lo manualmente
              # speed up um pouco o jogo
@@ -40,8 +40,8 @@ bola.shape("circle")
 bola.color("white")
 bola.penup()
 bola.goto(0, 0)
-bola.dx = 0.5
-bola.dy = 0.5
+bola.dx = 0.1
+bola.dy = 0.1
 
 # Caneta
 caneta = turtle.Turtle()
@@ -50,7 +50,7 @@ caneta.color("white")
 caneta.penup()
 caneta.hideturtle() # nao queremos ver a caneta apenas o texto
 caneta.goto(0, 260)
-caneta.write(f"Player A: {pontosA} Player B: {pontosB}",
+caneta.write(f"Player A: {pontosA}/5 Player B: {pontosB}/5",
              align="center", font=("Courier", 24, "normal"))
              # texto, centrado, fonte Courier, tamanho 24, tipo normal
              # apenas o texto inicial
@@ -88,24 +88,32 @@ def tocarSomBounce():
 def tocarSomPonto():
     winsound.PlaySound("Sounds/score.wav", winsound.SND_ASYNC)
 
-wd.listen() # ouvir input no teclado
-wd.onkeypress(raquete_a_up, "w") # se a tecla w tiver a ser pressionada corre a funcao raquete_a_up
-wd.onkeypress(raquete_a_down, "s") # se a tecla s tiver a ser pressionada corre a funcao raquete_a_down
-wd.onkeypress(raquete_b_up, "Up") # se a seta para cima tiver a ser pressionada corre a funcao raquete_b_up
-wd.onkeypress(raquete_b_down, "Down") # se a seta para baixo tiver a ser pressionada corre a funcao raquete_b_down
 
 # Main game loop
 while True:
-    # debug
-    print(bola.dx)
-    print(bola.dy)
 
     # sempre que o loop corre dá update ao screen
     wd.update()
 
-    # Mover a bola
-    bola.setx(bola.xcor() + bola.dx)
-    bola.sety(bola.ycor() + bola.dy)
+    # se o jogo ainda n acabou
+    if (pontosB != 5 and pontosA != 5):
+        # Mover a bola
+        bola.setx(bola.xcor() + bola.dx)
+        bola.sety(bola.ycor() + bola.dy)
+
+        wd.listen() # ouvir input no teclado
+        wd.onkeypress(raquete_a_up, "w") # se a tecla w tiver a ser pressionada corre a funcao raquete_a_up
+        wd.onkeypress(raquete_a_down, "s") # se a tecla s tiver a ser pressionada corre a funcao raquete_a_down
+        wd.onkeypress(raquete_b_up, "Up") # se a seta para cima tiver a ser pressionada corre a funcao raquete_b_up
+        wd.onkeypress(raquete_b_down, "Down") # se a seta para baixo tiver a ser pressionada corre a funcao raquete_b_down
+    # se o jogo acabou
+    else:
+        raquete_a.goto(-350, 0) # colocando a raquete A na posicao inicial
+        raquete_b.goto(350, 0) # colocando a raquete B na posicao inicial
+        caneta.goto(0, 200)
+        if (pontosA > pontosB): vencedor = "A" # escolhendo o vencedor
+        else: vencedor = "B"
+        caneta.write(f"O VENCEDOR É {vencedor}", align="center", font=("Courier", 24, "normal")) # print de quem venceu
 
     # Colisoes da bola com as raquetes
     # raquete A
@@ -122,11 +130,13 @@ while True:
 
     # Colisao com a barreira verticalmente (cima)
     if bola.ycor() > ((gameHeight) / 2) - 20:
+        tocarSomBounce() # tocar som de rebater
         bola.sety(((gameHeight) / 2) - 20)
         bola.dy *= -1
 
     # Colisao com a barreira verticalmente (baixo)
     if bola.ycor() < (-(gameHeight) / 2) + 20:
+        tocarSomBounce() # tocar som de rebater
         bola.sety((-(gameHeight) / 2) + 20)
         bola.dy *= -1
 
@@ -166,5 +176,5 @@ while True:
     # se marcou ponto atualiza o texto que esta a ser desenhado
     if marcou_ponto:
         caneta.clear() # dar clear ao que esta escrito
-        caneta.write(f"Player A: {pontosA} Player B: {pontosB}", align="center", font=("Courier", 24, "normal")) # texto, centrado, fonte courier, tamanho 24, tipo normal
+        caneta.write(f"Player A: {pontosA}/5 Player B: {pontosB}/5", align="center", font=("Courier", 24, "normal")) # texto, centrado, fonte courier, tamanho 24, tipo normal
         marcou_ponto = False
