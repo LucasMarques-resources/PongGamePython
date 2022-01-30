@@ -113,7 +113,7 @@ while True:
         caneta.goto(0, 200)
         if (pontosA > pontosB): vencedor = "A" # escolhendo o vencedor
         else: vencedor = "B"
-        caneta.write(f"O VENCEDOR É {vencedor}", align="center", font=("Courier", 24, "normal")) # print de quem venceu
+        caneta.write(f"O VENCEDOR É O JOGADOR {vencedor}", align="center", font=("Courier", 24, "normal")) # print de quem venceu
 
     # Colisoes da bola com as raquetes
     # raquete A
